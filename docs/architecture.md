@@ -1,6 +1,6 @@
 # Architecture and trust boundaries
 
-The chart is [architecture-chart.md](architecture-chart.md).
+The chart is in the [README](../README.md#architecture).
 
 One local process hosts four modules. The example workflow investigates a synthetic diagnostic snapshot. It is not a general agent platform.
 
