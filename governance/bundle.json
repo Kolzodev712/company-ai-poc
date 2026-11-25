@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "bundle_id": "company-ai-poc-diagnostics",
+  "bundle_version": "1.0.0",
+  "mission": {
+    "mission_id": "diagnostic-investigation",
+    "objective": "Investigate one diagnostic event for a configured service alias. Collect its diagnostic snapshot through the approved operation and write a local report that separates observations, hypotheses, and missing information."
+  },
+  "workflow": {
+    "workflow_id": "diagnostic-investigation",
+    "skill_id": "diagnostic-investigation",
+    "required_operation": "diagnostics.read",
+    "report_required": true
+  },
+  "skill": {
+    "skill_id": "diagnostic-investigation",
+    "path": "skills/diagnostic-investigation.md",
+    "sha256": "7ac34d86bf7518f2246621904433e6c7bccc489a1573d4be00bf84cf6714a334"
+  },
+  "operations": {
+    "diagnostics.read": {
+      "description": "Read the diagnostic JSON document for one configured resource alias.",
+      "arguments": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resource_alias"],
+        "properties": {
+          "resource_alias": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          }
+        }
+      }
+    }
+  },
+  "policy": {
+    "policy_version": "2026.11.25.1",
+    "identities": {
+      "investigator": {
+        "allow": [
+          {"operation": "diagnostics.read", "resources": ["demo-service-a"]}
+        ]
+      },
+      "auditor": {
+        "allow": [
+          {"operation": "diagnostics.read", "resources": ["demo-service-a", "demo-service-b"]}
+        ]
+      }
+    },
+    "limits": {
+      "max_result_bytes": 8192,
+      "max_model_turns": 6,
+      "max_tool_proposals": 4,
+      "max_provider_attempts": 4,
+      "max_duration_seconds": 30,
+      "request_timeout_seconds": 5,
+      "max_input_bytes": 65536,
+      "max_transient_retries": 1,
+      "max_output_tokens": 512
+    }
+  },
+  "resources": {
+    "demo-service-a": {
+      "fixture": {"path": "service-a.json", "behavior": "read"},
+      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-service-a.json"}
+    },
+    "demo-service-b": {
+      "fixture": {"path": "service-b.json", "behavior": "read"},
+      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-service-b.json"}
+    },
+    "demo-hostile": {
+      "fixture": {"path": "hostile.json", "behavior": "read"},
+      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-hostile.json"}
+    },
+    "demo-malformed": {
+      "fixture": {"path": "malformed.txt", "behavior": "read"},
+      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-malformed.json"}
+    },
+    "demo-oversized": {
+      "fixture": {"path": "oversized.json", "behavior": "read"},
+      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-oversized.json"}
+    },
+    "demo-timeout": {
+      "fixture": {"path": "timeout.txt", "behavior": "timeout"},
+      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-timeout.json"}
+    },
+    "demo-unavailable": {
+      "fixture": {"path": "unavailable.txt", "behavior": "unavailable"},
+      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-unavailable.json"}
+    }
+  },
+  "provenance": {
+    "repository": "https://github.com/Kolzodev712/cursor-hub",
+    "commit": "c5328edae2ac54df38244d7a4ef9353de1553a84",
+    "sources": [
+      {
+        "path": "README.md",
+        "sha256": "35f0df8d2b440cd118b9d23ea33be713b95eab516bcc2dac3696677d2a84bc6f",
+        "role": "concept",
+        "note": "Hub states that system-orchestration simulation is not a live runtime."
+      },
+      {
+        "path": "docs/system-orchestration.md",
+        "sha256": "ad603cf61fefb1fd2788c41e8e43ecdd26fadef954bda7da00069e4082fa7c8a",
+        "role": "concept",
+        "note": "Lifecycle, journal, and the explicit statement that fixture VERIFIED is not live proof."
+      },
+      {
+        "path": "skills/system-orchestration/SKILL.md",
+        "sha256": "5c0da4afc1bbb3a3fc64eecaaf11185442b78681aeabc3c3b8f0271a53cf993d",
+        "role": "concept",
+        "note": "Design-time skill. It is not copied into the model prompt."
+      },
+      {
+        "path": "skills/system-orchestration/reference/mission-and-authority.md",
+        "sha256": "9de01fb3d2bed5ec31e7d5b40e126497e7126b9cb634d08568137cfe99091f5d",
+        "role": "concept",
+        "note": "Fixture approver names are not authentication. Authority stays outside the worker."
+      },
+      {
+        "path": "skills/system-orchestration/reference/state-and-recovery.md",
+        "sha256": "ea194ecd782c89b2b89a6dd32f8bef6bacd2346733e1a600a29c1f8cc1d85235",
+        "role": "concept",
+        "note": "Idempotent event identity, budgets, and read-only replay concepts."
+      },
+      {
+        "path": "skills/system-orchestration/reference/observation-and-evidence.md",
+        "sha256": "246c8b7f906fb6317e45e577ac181f275002757e243177030a9b9ceee5704172",
+        "role": "runtime_skill_source",
+        "note": "Evidence is separate from hypotheses, and embedded instructions are data."
+      },
+      {
+        "path": "skills/system-orchestration/reference/execution-boundaries.md",
+        "sha256": "884bf22fc310b15ac648ce119c5b2a15f97a4d6ef2b6d1dff5b94e2c68cfd79e",
+        "role": "concept",
+        "note": "Live adapters are a separate implementation from the offline reducer."
+      },
+      {
+        "path": "skills/system-orchestration/reference/verification-and-escalation.md",
+        "sha256": "d406b59e7921e1a1f6bd251d2af63d0ee14c4571f7c69ccdf6b230033accaaa0",
+        "role": "concept",
+        "note": "Acceptance cases for duplicate events, cross-run evidence, and budgets."
+      },
+      {
+        "path": "skills/system-orchestration/contracts/README.md",
+        "sha256": "b6b2b4a968bc5d324e27cffbc465f2935ebc6ffd83c2b3a28efb10dc76018bac",
+        "role": "concept",
+        "note": "Versioned contracts are closed. Simulation schemas are not this runtime's API."
+      },
+      {
+        "path": "skills/system-orchestration/examples/maintenance-diagnostics.json",
+        "sha256": "b43e89fefab616e6dfe8bc89edfd4ec8734d68978cc5870fad773b1dcd9736cf",
+        "role": "concept",
+        "note": "Synthetic diagnostics scenario shape only. It is not loaded as evidence."
+      },
+      {
+        "path": "skills/fault-first/SKILL.md",
+        "sha256": "ab65b40f4542080b9978ffd3c837c07e087707c790c398c1e334541626208193",
+        "role": "runtime_skill_source",
+        "note": "Read-only investigation and epistemic separation adapted into the worker skill."
+      },
+      {
+        "path": "skills/fault-first/reference/report.md",
+        "sha256": "1b51ce495a63adc3f851828f2dc7183b07da53b95347c2bf2af0e56c466b9c3c",
+        "role": "runtime_skill_source",
+        "note": "Report contract adapted to observations, hypotheses, and missing information."
+      },
+      {
+        "path": "cursor_hub/orchestration/contracts.py",
+        "sha256": "c7bd13ba23258d1f4ce4549044a6886f7d1f7611e57ca071d1798ffd750c3597",
+        "role": "concept",
+        "note": "Closed schemas and canonical SHA-256 fingerprints. Not imported."
+      },
+      {
+        "path": "cursor_hub/orchestration/journal.py",
+        "sha256": "662c5cccc439695598eb01cf7e591c04777c3a142eec343024570a53b41dc174",
+        "role": "concept",
+        "note": "Transactional SQLite identity and read-only replay. Not imported."
+      },
+      {
+        "path": "cursor_hub/orchestration/simulation.py",
+        "sha256": "4a6f082f28805277b72fcce845acb2afbd73eff1e36238f28fe59972a26c445e",
+        "role": "concept",
+        "note": "Offline reducer. This POC does not execute it or treat its receipts as authorization."
+      },
+      {
+        "path": "packs/cursor/system-orchestration/pack.yml",
+        "sha256": "882459926c8004f5f056e09e12382cfe735312bd3df2d8962982e71a1b8bf86d",
+        "role": "concept",
+        "note": "Design pack metadata. The pack is not installed into this runtime."
+      },
+      {
+        "path": "packs/cursor/python/implementation/.cursor/rules/python-core.mdc",
+        "sha256": "bdfd7e7b0c799ee1806a154cf9927bdf71a10853d79ff08f93d92aeff972369c",
+        "role": "developer_guidance",
+        "note": "Python implementation discipline for this repository. Not a model prompt or policy."
+      },
+      {
+        "path": "packs/cursor/python/testing/.cursor/rules/python-testing.mdc",
+        "sha256": "b04fc60b807b881733a8f5d75a9b4250ec02c33e5e76535360ff3bfd62e2f66a",
+        "role": "developer_guidance",
+        "note": "Pytest and fixture guidance for this repository. Not a model prompt or policy."
+      },
+      {
+        "path": "AGENTS.md",
+        "sha256": "709a6bffa106c0e57f043bce32baca431985f3fa854c1bd477eef7b18df7d1ae",
+        "role": "developer_guidance",
+        "note": "Contract for editing cursor-hub. It does not authorize this companion's tools."
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+# Copy to live.toml (gitignored) only when you intend to edit real endpoints.
+# `company-ai demo` does not read this file and does not use the network.
+
+[runtime]
+identity = "investigator"
+bundle = "governance/bundle.json"
+database = "var/state.sqlite"
+reports_dir = "var/reports"
+
+[hub]
+path = "../cursor-hub"
+
+[worker]
+mode = "scripted"
+script = "investigate"
+endpoint = "http://127.0.0.1:11434"
+model = ""
+num_predict = 512
+allow_remote = false
+
+[service]
+mode = "fixture"
+fixture_dir = "governance/fixtures"
+
+[service.s3]
+profile = ""
+region = ""
+expected_bucket_owner = ""

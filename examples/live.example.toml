@@ -1,0 +1,29 @@
+# Copy to live.toml and replace every YOUR_* value.
+# Select modes explicitly. `company-ai run` still requires --live before any live call.
+# Bucket and key stay in your private copy of the governance bundle, not in this file.
+
+[runtime]
+identity = "investigator"
+bundle = "governance/bundle.json"
+database = "var/live/state.sqlite"
+reports_dir = "var/live/reports"
+
+[hub]
+path = "../cursor-hub"
+
+[worker]
+mode = "scripted"
+script = "investigate"
+endpoint = "http://127.0.0.1:11434"
+model = "YOUR_MODEL"
+num_predict = 512
+allow_remote = false
+
+[service]
+mode = "fixture"
+fixture_dir = "governance/fixtures"
+
+[service.s3]
+profile = "YOUR_AWS_PROFILE"
+region = "YOUR_AWS_REGION"
+expected_bucket_owner = ""
