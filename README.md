@@ -92,6 +92,7 @@ The profile needs `s3:GetObject` on that object only. See `docs/adapters.md`. Th
 | `src/gateway.rs` | The only `diagnostics.read` path |
 | `src/runtime.rs` | Bounded event loop and completion checks |
 | `governance/` | Mission, skill, policy, fixtures, cursor-hub provenance |
+| `docs/architecture-chart.md` | Module, trust, sequence, and state charts |
 | `docs/architecture.md` | Trust boundaries |
 | `docs/adapters.md` | Extension points |
 | `docs/adr/` | Decisions, including the move to Rust |
