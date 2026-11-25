@@ -1,5 +1,14 @@
 # Limitations and hub follow-ups
 
+## Verification
+
+```bash
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo test --workspace --all-features
+cargo run -- demo --output var/demo
+```
+
 ## What a passing fixture run shows
 
 The scripted worker and fixture adapter complete the example investigation without network access. Policy denies the forbidden alias before any file read. Duplicate events do not create a second run. Reports cite evidence stored for that run.

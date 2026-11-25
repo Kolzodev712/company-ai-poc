@@ -1,10 +1,10 @@
 # Adapter extension guide
 
-The runtime and the broker depend on small Python protocols, not on a provider SDK.
+The runtime and the broker depend on Rust traits, not on a provider SDK. `DiagnosticsSource::read` accepts an `AuthorizedRead` created by the broker. `Worker::turn` returns an unvalidated JSON value. `ObjectReader` and `ChatTransport` are the live I/O seams.
 
 ## Event source
 
-`company_ai.runtime.Runtime.handle_event` accepts one decoded event object:
+`Runtime::handle_event` accepts one decoded event object:
 
 ```json
 {
@@ -17,7 +17,7 @@ The runtime and the broker depend on small Python protocols, not on a provider S
 }
 ```
 
-A future webhook can validate this JSON and call `handle_event`. It should not grow a second execution loop. The CLI loader is `company_ai.config.load_event`.
+A future webhook can validate this JSON and call `handle_event`. It should not grow a second execution loop. The CLI loader is `load_event`.
 
 ## Service adapter
 
@@ -26,7 +26,7 @@ Implement `read(target, timeout_seconds, max_bytes) -> AdapterResult`.
 - `target` is the broker's resolved target. Ignore any location that is not on that object.
 - Return a failure result for timeout, denial, missing objects, malformed documents, and oversized documents. Do not raise credentials in the message.
 - On success, `source["resource_alias"]` must match the target. Fixture sources include `relative_path`. S3 sources include `bucket` and `key`. The gateway drops the result if those differ.
-- Keep SDK types inside the adapter. `AdapterResult.payload` is the diagnostic JSON object defined in `company_ai.contracts`.
+- Keep SDK types inside the adapter. `AdapterResult.payload` is the diagnostic struct defined with Serde. Schemars derives the portable JSON Schema from the governance types; Serde rejects unknown fields.
 
 The fixture adapter only reads files inside its configured directory. The S3 adapter calls `GetObject` for the alias's bucket and key, with `Range: bytes=0-{max_bytes}`, and it does not follow a model-supplied bucket or key.
 
@@ -42,15 +42,14 @@ Use a general-purpose bucket and one object key. This POC does not request `s3:L
 }
 ```
 
-SSE-KMS objects also need `kms:Decrypt` on that key. The adapter sets botocore `retries.max_attempts` to `1` (the SDK count includes the first attempt) and sets connect and read timeouts from the remaining run budget. The runtime may try a transient read one more time; that retry is a new persisted provider attempt. A successful fetch of the synthetic sample shows connectivity. It does not show that a production incident was diagnosed. The ETag and the local SHA-256 are recorded and are not authentication.
+SSE-KMS objects also need `kms:Decrypt` on that key. The adapter sets the AWS SDK retry config `max_attempts` to `1` (the count includes the first attempt) and sets connect, read, and attempt timeouts from the remaining run budget. The runtime may try a transient read one more time; that retry is a new persisted provider attempt. A successful fetch of the synthetic sample shows connectivity. It does not show that a production incident was diagnosed. The ETag and the local SHA-256 are recorded and are not authentication.
 
-Build a client only when `read` runs and no client was injected:
+Build a client only when a live read runs. Credentials come from the named profile file, and the region comes from configuration. There is no fallback profile and no fallback to fixtures.
 
 ```text
-boto3.Session(profile_name=THE_PROFILE, region_name=THE_REGION).client("s3", config=...)
+ProfileFileCredentialsProvider::builder().profile_name(THE_PROFILE)
+aws_sdk_s3::Client configured with that provider, THE_REGION, and RetryConfig::standard().with_max_attempts(1)
 ```
-
-There is no fallback profile and no fallback to fixtures. Install the SDK with `pip install -e '.[live]'`.
 
 ## Model backend
 
@@ -72,4 +71,4 @@ The Ollama adapter posts to `{endpoint}/api/chat` as documented: `stream: false`
 
 ## Report destination
 
-`company_ai.reporting.write_report` writes JSON and Markdown under the configured directory. A replacement should keep the same distinction between `recorded_facts`, `model_report.hypotheses`, and `model_report.missing`, and should keep the limitation statement.
+`write_reports` writes JSON and Markdown under the configured directory. A replacement should keep the same distinction between `recorded_facts`, `model_report.hypotheses`, and `model_report.missing`, and should keep the limitation statement.

@@ -1,72 +1,70 @@
 # company-ai-poc
 
-A small, local proof of concept for four reusable workflow pieces: governance, a security broker, a tooling gateway, and a runtime. The business scenario is one example, not a workflow for every company.
+A local Rust proof of concept for four reusable workflow pieces: governance, a security broker, a tooling gateway, and a runtime. The business scenario is one example, not a workflow for every company.
 
 An investigator receives a diagnostic event for `demo-service-a`, reads one policy-approved snapshot, and writes a local report. The report separates recorded facts, hypotheses, and missing information. That structure does not prove the diagnosis is true.
 
-cursor-hub is a read-only reference. This project does not import it, install its packs, or change it. Recorded source hashes live in `governance/bundle.json`.
+cursor-hub is a read-only reference. This project does not modify it. Recorded source hashes live in `governance/bundle.json`.
 
 ## Install
 
-Python 3.11 or newer. From this directory:
+Rust 1.85 or newer. From this directory:
 
 ```bash
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install -e '.[dev]'
+cargo build --release
 ```
 
-`boto3` is included in the `dev` and `live` extras so the S3 adapter can be imported. Fixture runs do not call AWS or Ollama.
+The debug binary is `target/debug/company-ai`. After `cargo build --release`, it is `target/release/company-ai`. The commands below use `cargo run --` so the binary does not need to be on `PATH`.
+
+Fixture runs do not call AWS or Ollama.
 
 ## Fixture demo
 
 ```bash
-company-ai validate --bundle governance/bundle.json --fixture-dir governance/fixtures --config examples/config.example.toml --hub ../cursor-hub
-company-ai demo --output var/demo
-company-ai inspect --database var/demo/state.sqlite --run RUN_ID
-company-ai replay --database var/demo/state.sqlite --run RUN_ID
-company-ai export --database var/demo/state.sqlite --run RUN_ID
+cargo run -- validate --bundle governance/bundle.json --fixture-dir governance/fixtures --config examples/config.example.toml --hub ../cursor-hub
+cargo run -- demo --output var/demo
+cargo run -- inspect --database var/demo/state.sqlite --run RUN_ID
+cargo run -- replay --database var/demo/state.sqlite --run RUN_ID
+cargo run -- export --database var/demo/state.sqlite --run RUN_ID
 ```
 
-`demo` prints `run_id:`. Use that value as `RUN_ID`.
+`demo` prints `run_id:`. Use that value as `RUN_ID`. It always uses the scripted worker and the fixture service. It does not read `live.toml` and it does not use the network. Running it again with the same event returns the original run and does not read the fixture again.
 
-`company-ai demo` always uses the scripted worker and the fixture service. It does not read `live.toml` and it does not use the network. Running it again with the same event returns the original run and does not read the fixture again.
-
-Reports are `var/demo/reports/<run_id>.json` and `.md`. The verification copy is `examples/demo-run/run_149738b2408b4b7a85ea2344f17aa83d.md`. Paths inside a config file are relative to the working directory, so run commands from this directory.
+Reports are `var/demo/reports/<run_id>.json` and `.md`. The fresh Rust verification copy is `examples/demo-run/run_7882d2217f2f473da0b3e51de0235363.md`. Paths inside a config file are relative to the working directory.
 
 ## Tests
 
 ```bash
-python -m pytest -q
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo test --workspace --all-features
 ```
 
-Live smoke tests are skipped unless you set `COMPANY_AI_LIVE=1` and provide `live.toml`. A skip is not a passed live call.
+The live smoke test is ignored unless you run it explicitly. An ignored test is not a passed live call.
 
 ## Other commands
 
-Run one event. Worker and service are independent. Live calls also need `--live`.
-
 ```bash
-company-ai run --config examples/config.example.toml --event examples/events/diagnostic-demo-service-a.json --worker scripted --service fixture
+cargo run -- run --config examples/config.example.toml --event examples/events/diagnostic-demo-service-a.json --worker scripted --service fixture
 ```
 
 ```bash
-company-ai run --config live.toml --event examples/events/diagnostic-demo-service-a.json --worker ollama --service fixture --live
-company-ai run --config live.toml --event examples/events/diagnostic-demo-service-a.json --worker scripted --service s3 --live
-company-ai run --config live.toml --event examples/events/diagnostic-demo-service-a.json --worker ollama --service s3 --live
+cargo run -- run --config live.toml --event examples/events/diagnostic-demo-service-a.json --worker ollama --service fixture --live
+cargo run -- run --config live.toml --event examples/events/diagnostic-demo-service-a.json --worker scripted --service s3 --live
+cargo run -- run --config live.toml --event examples/events/diagnostic-demo-service-a.json --worker ollama --service s3 --live
 ```
 
 Check live settings without contacting a provider:
 
 ```bash
-company-ai live check --config live.toml --event examples/events/diagnostic-demo-service-a.json
+cargo run -- live check --config live.toml --event examples/events/diagnostic-demo-service-a.json
 ```
 
 Bounded smoke tests, only after `live check` is ready:
 
 ```bash
-company-ai live smoke --config live.toml --target ollama
-company-ai live smoke --config live.toml --target s3 --resource demo-service-a
+cargo run -- live smoke --config live.toml --target ollama
+cargo run -- live smoke --config live.toml --target s3 --resource demo-service-a
 ```
 
 Exit codes: `0` completed investigation or a valid check, `1` recorded failure, `2` setup, validation, or event conflict.
@@ -77,28 +75,25 @@ Copy `examples/live.example.toml` to `live.toml` (gitignored). Set:
 
 - `worker.mode` to `ollama` and `worker.model` to a model already installed in Ollama. The default endpoint is `http://127.0.0.1:11434`. A non-local endpoint also requires `worker.allow_remote = true`.
 - `service.mode` to `s3`, `service.s3.profile` to an AWS profile name, and `service.s3.region` to that profile's region.
-- In a private copy of the bundle, replace `YOUR_BUCKET` and the object key for the alias you will read. Do not commit account identifiers.
+- In a private copy of the bundle, replace `YOUR_BUCKET` for the alias you will read. The example object key is `diagnostics/demo-service-a.json`.
 
-The profile needs `s3:GetObject` on that object only. See `docs/adapters.md`. This program does not create buckets, upload objects, or change IAM.
-
-Missing live settings are an error. The run does not silently switch to fixtures.
+The profile needs `s3:GetObject` on that object only. See `docs/adapters.md`. This program does not create buckets, upload objects, or change IAM. The S3 client uses that named profile's credential file, not an ambient default account, and it does not fall back to fixtures.
 
 ## Restart an interrupted run
 
-`company-ai inspect` marks a run left in `running` as `interrupted` and does not call a provider. Submitting the same event id returns that run. Start a deliberate new attempt with a new event id. Replay reads history and does not call a model or a provider; it does not reproduce model text.
+`inspect` marks a run left in `running` as `interrupted` and does not call a provider. Submitting the same event id returns that run. Start a deliberate new attempt with a new event id. Replay reads history and does not call a model or a provider.
 
 ## Layout
 
 | Path | Role |
 | --- | --- |
-| `src/company_ai/governance.py` | Bundle loading and provenance checks |
-| `src/company_ai/broker.py` | Deny-by-default decisions |
-| `src/company_ai/gateway.py` | The only `diagnostics.read` path |
-| `src/company_ai/runtime.py` | Bounded event loop and completion checks |
+| `src/governance.rs` | Bundle loading and provenance checks |
+| `src/broker.rs` | Deny-by-default decisions and `AuthorizedRead` |
+| `src/gateway.rs` | The only `diagnostics.read` path |
+| `src/runtime.rs` | Bounded event loop and completion checks |
 | `governance/` | Mission, skill, policy, fixtures, cursor-hub provenance |
 | `docs/architecture.md` | Trust boundaries |
-| `docs/adapters.md` | How to add an event source, adapter, or model backend |
-| `docs/adr/0001-architecture.md` | Decisions |
-| `docs/limitations.md` | What this does not prove, and hub follow-ups |
+| `docs/adapters.md` | Extension points |
+| `docs/adr/` | Decisions, including the move to Rust |
 
-This process is not a sandbox. The gateway blocks the one business tool it exposes. It does not contain arbitrary Python, shell, or a model that can ignore the operating-system privileges of this process.
+This process is not a sandbox. The gateway blocks the one business tool it exposes. It does not contain a shell, an evaluator, or a model that can ignore the operating-system privileges of this process.

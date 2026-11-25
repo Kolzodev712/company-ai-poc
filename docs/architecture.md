@@ -29,7 +29,7 @@ Provider credentials, when a live adapter is used, come from the operator's AWS 
 
 ## What each module owns
 
-Governance loads one versioned bundle: mission, workflow, the investigation skill, the `diagnostics.read` argument schema, per-identity allow-lists, bundle-wide limits, resource aliases, and cursor-hub provenance. Engineering-doctrine and Python pack rules are developer guidance. They are not loaded into the worker and they are not executed as policy.
+Governance loads one versioned bundle: mission, workflow, the investigation skill, the `diagnostics.read` argument schema, per-identity allow-lists, bundle-wide limits, resource aliases, and cursor-hub provenance. Rust pack rules are developer guidance for this repository. They are not loaded into the worker and they are not executed as policy. The implementation is one Rust process; see ADR 0002.
 
 The broker allows a request only when the runtime identity has that operation and alias. It resolves the alias with the bundle for the selected provider (`fixture` or `s3`) and returns the exact target plus the limits that apply to that call. A decision is stored and then discarded as authority. The next call is evaluated again.
 

@@ -1,0 +1,107 @@
+{
+  "adapters": {
+    "service": "fixture",
+    "service_transport": "local_files",
+    "worker": "scripted",
+    "worker_transport": "script"
+  },
+  "authorization_decisions": [
+    {
+      "allowed": true,
+      "decision_id": "dec_02bc2e6c0c804c4bb8d2a577ae7265d5",
+      "operation": "diagnostics.read",
+      "policy_version": "2026.11.25.1",
+      "reason": "allowed",
+      "resource_alias": "demo-service-a",
+      "target": {
+        "behavior": "read",
+        "provider": "fixture",
+        "relative_path": "service-a.json",
+        "resource_alias": "demo-service-a"
+      }
+    }
+  ],
+  "company_ai_version": "0.1.0",
+  "completion": {
+    "checks": [
+      {
+        "name": "same_run_evidence_references",
+        "passed": true
+      },
+      {
+        "name": "required_diagnostics_read",
+        "passed": true
+      }
+    ],
+    "failure_code": null,
+    "passed": true
+  },
+  "event_id": "evt-demo-service-a-001",
+  "failure_code": null,
+  "failure_detail": null,
+  "governance": {
+    "bundle_fingerprint": "7c869fca83f5da272463f350cb09368b9c2327b793e0b6c8680f35f286b22653",
+    "bundle_id": "company-ai-poc-diagnostics",
+    "bundle_version": "1.0.0",
+    "cursor_hub_commit": "c5328edae2ac54df38244d7a4ef9353de1553a84",
+    "cursor_hub_repository": "https://github.com/Kolzodev712/cursor-hub",
+    "mission_id": "diagnostic-investigation",
+    "policy_version": "2026.11.25.1",
+    "workflow_id": "diagnostic-investigation"
+  },
+  "identity": "investigator",
+  "limitations": [
+    "Structural validation and resolvable evidence references do not prove that the diagnosis is true. Recorded facts are the diagnostic fields that were stored. Hypotheses are model output and are not facts. A content hash, an S3 ETag, or a fixture filename is not authentication. Configured identities are trusted-runtime labels, not cryptographic workload credentials.",
+    "Service mode is fixture. This run does not prove live service connectivity.",
+    "Worker mode is scripted. This run does not prove model participation."
+  ],
+  "model_id": null,
+  "model_report": {
+    "evidence_ids": [
+      "ev_1c7eb5919a6d4b1c80194574f239b687"
+    ],
+    "hypotheses": [
+      "The error count may be associated with the recorded deployment. The snapshot does not establish that link."
+    ],
+    "missing": [
+      "No host metrics, change ticket, or previous baseline were in the snapshot."
+    ],
+    "observations": [
+      "service=demo-service-a",
+      "status=degraded",
+      "recent_error_count=3",
+      "recent_deployment_id=deploy-1007",
+      "timestamp=2026-11-25T12:00:00Z"
+    ]
+  },
+  "recorded_facts": [
+    {
+      "captured_at": "2026-11-25T18:11:05Z",
+      "content_sha256": "64272500938eef5dc902d2ad74f19ea18369307165fcd32d8e8e25d11d7a7884",
+      "evidence_id": "ev_1c7eb5919a6d4b1c80194574f239b687",
+      "operation": "diagnostics.read",
+      "payload": {
+        "recent_deployment_id": "deploy-1007",
+        "recent_error_count": 3,
+        "service": "demo-service-a",
+        "status": "degraded",
+        "timestamp": "2026-11-25T12:00:00Z"
+      },
+      "resource_alias": "demo-service-a",
+      "run_id": "run_7882d2217f2f473da0b3e51de0235363",
+      "source": {
+        "adapter": "fixture",
+        "authenticity": "content hash is not authentication",
+        "behavior": "read",
+        "byte_length": 165,
+        "content_sha256": "64272500938eef5dc902d2ad74f19ea18369307165fcd32d8e8e25d11d7a7884",
+        "relative_path": "service-a.json",
+        "resource_alias": "demo-service-a"
+      }
+    }
+  ],
+  "run_id": "run_7882d2217f2f473da0b3e51de0235363",
+  "service_mode": "fixture",
+  "status": "succeeded",
+  "worker_mode": "scripted"
+}

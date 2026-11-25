@@ -192,16 +192,28 @@
         "note": "Design pack metadata. The pack is not installed into this runtime."
       },
       {
-        "path": "packs/cursor/python/implementation/.cursor/rules/python-core.mdc",
-        "sha256": "bdfd7e7b0c799ee1806a154cf9927bdf71a10853d79ff08f93d92aeff972369c",
+        "path": "packs/cursor/rust/implementation/.cursor/rules/rust-core.mdc",
+        "sha256": "5aa6f60ee331cb6542d645c12ad5dc22a7a12a78e0bc7f0d8948a6670a0b2955",
         "role": "developer_guidance",
-        "note": "Python implementation discipline for this repository. Not a model prompt or policy."
+        "note": "Rust implementation discipline for this repository. Not a model prompt or policy."
       },
       {
-        "path": "packs/cursor/python/testing/.cursor/rules/python-testing.mdc",
-        "sha256": "b04fc60b807b881733a8f5d75a9b4250ec02c33e5e76535360ff3bfd62e2f66a",
+        "path": "packs/cursor/rust/implementation/.cursor/rules/rust-error-handling.mdc",
+        "sha256": "dc7467fe62978e0a61495c774949852ea288997d7bb1784cfcafe37f1c4e009d",
         "role": "developer_guidance",
-        "note": "Pytest and fixture guidance for this repository. Not a model prompt or policy."
+        "note": "Result-based error handling guidance. Not a model prompt or policy."
+      },
+      {
+        "path": "packs/cursor/rust/implementation/.cursor/rules/rust-anti-footguns.mdc",
+        "sha256": "704b93613f59252da1fd7460ad7f5235d4e99ba21517b73d72c0718c3c962af3",
+        "role": "developer_guidance",
+        "note": "Rust borrow and unsafe guidance. Not a model prompt or policy."
+      },
+      {
+        "path": "packs/cursor/rust/testing/.cursor/rules/rust-testing.mdc",
+        "sha256": "be0a618102a94554fa9c0dd64a45538bcebe99fa00f378889ce70008a84d69a8",
+        "role": "developer_guidance",
+        "note": "Cargo test guidance for this repository. Not a model prompt or policy."
       },
       {
         "path": "AGENTS.md",

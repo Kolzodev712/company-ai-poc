@@ -1,0 +1,29 @@
+[package]
+name = "company-ai"
+version = "0.1.0"
+edition = "2021"
+description = "Local proof of concept for governed company AI workflow components."
+readme = "README.md"
+publish = false
+
+[dependencies]
+anyhow = "1"
+aws-config = "1"
+aws-sdk-s3 = "1"
+clap = { version = "4", features = ["derive"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+rusqlite = { version = "0.34", features = ["bundled"] }
+schemars = { version = "0.8", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+thiserror = "2"
+tokio = { version = "1", features = ["rt", "macros", "time"] }
+toml = "0.8"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt", "std", "ansi"] }
+url = "2"
+uuid = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+rusqlite = { version = "0.34", features = ["bundled"] }

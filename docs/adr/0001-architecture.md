@@ -1,7 +1,7 @@
 # ADR 0001 — Company AI workflow POC
 
 Date: 2026-11-25
-Status: accepted
+Status: accepted. The Python language choice is superseded by ADR 0002. Module boundaries, trust assumptions, and non-goals still apply.
 
 ## Context
 
