@@ -23,7 +23,9 @@
       "arguments": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["resource_alias"],
+        "required": [
+          "resource_alias"
+        ],
         "properties": {
           "resource_alias": {
             "type": "string",
@@ -40,12 +42,23 @@
     "identities": {
       "investigator": {
         "allow": [
-          {"operation": "diagnostics.read", "resources": ["demo-service-a"]}
+          {
+            "operation": "diagnostics.read",
+            "resources": [
+              "demo-service-a"
+            ]
+          }
         ]
       },
       "auditor": {
         "allow": [
-          {"operation": "diagnostics.read", "resources": ["demo-service-a", "demo-service-b"]}
+          {
+            "operation": "diagnostics.read",
+            "resources": [
+              "demo-service-a",
+              "demo-service-b"
+            ]
+          }
         ]
       }
     },
@@ -63,41 +76,83 @@
   },
   "resources": {
     "demo-service-a": {
-      "fixture": {"path": "service-a.json", "behavior": "read"},
-      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-service-a.json"}
+      "fixture": {
+        "path": "service-a.json",
+        "behavior": "read"
+      },
+      "s3": {
+        "bucket": "YOUR_BUCKET",
+        "key": "diagnostics/demo-service-a.json"
+      }
     },
     "demo-service-b": {
-      "fixture": {"path": "service-b.json", "behavior": "read"},
-      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-service-b.json"}
+      "fixture": {
+        "path": "service-b.json",
+        "behavior": "read"
+      },
+      "s3": {
+        "bucket": "YOUR_BUCKET",
+        "key": "diagnostics/demo-service-b.json"
+      }
     },
     "demo-hostile": {
-      "fixture": {"path": "hostile.json", "behavior": "read"},
-      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-hostile.json"}
+      "fixture": {
+        "path": "hostile.json",
+        "behavior": "read"
+      },
+      "s3": {
+        "bucket": "YOUR_BUCKET",
+        "key": "diagnostics/demo-hostile.json"
+      }
     },
     "demo-malformed": {
-      "fixture": {"path": "malformed.txt", "behavior": "read"},
-      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-malformed.json"}
+      "fixture": {
+        "path": "malformed.txt",
+        "behavior": "read"
+      },
+      "s3": {
+        "bucket": "YOUR_BUCKET",
+        "key": "diagnostics/demo-malformed.json"
+      }
     },
     "demo-oversized": {
-      "fixture": {"path": "oversized.json", "behavior": "read"},
-      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-oversized.json"}
+      "fixture": {
+        "path": "oversized.json",
+        "behavior": "read"
+      },
+      "s3": {
+        "bucket": "YOUR_BUCKET",
+        "key": "diagnostics/demo-oversized.json"
+      }
     },
     "demo-timeout": {
-      "fixture": {"path": "timeout.txt", "behavior": "timeout"},
-      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-timeout.json"}
+      "fixture": {
+        "path": "timeout.txt",
+        "behavior": "timeout"
+      },
+      "s3": {
+        "bucket": "YOUR_BUCKET",
+        "key": "diagnostics/demo-timeout.json"
+      }
     },
     "demo-unavailable": {
-      "fixture": {"path": "unavailable.txt", "behavior": "unavailable"},
-      "s3": {"bucket": "YOUR_BUCKET", "key": "diagnostics/demo-unavailable.json"}
+      "fixture": {
+        "path": "unavailable.txt",
+        "behavior": "unavailable"
+      },
+      "s3": {
+        "bucket": "YOUR_BUCKET",
+        "key": "diagnostics/demo-unavailable.json"
+      }
     }
   },
   "provenance": {
     "repository": "https://github.com/Kolzodev712/cursor-hub",
-    "commit": "c5328edae2ac54df38244d7a4ef9353de1553a84",
+    "commit": "14b375bbc77c0dfb15d03cb26f1231c3b5d5d0da",
     "sources": [
       {
         "path": "README.md",
-        "sha256": "35f0df8d2b440cd118b9d23ea33be713b95eab516bcc2dac3696677d2a84bc6f",
+        "sha256": "ef37c832096eb541c2b6afa698bf73988d54e44d98aae4c30ad70f8d9f7f3359",
         "role": "concept",
         "note": "Hub states that system-orchestration simulation is not a live runtime."
       },

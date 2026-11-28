@@ -1,0 +1,51 @@
+name: Feature proposal
+description: Propose an enhancement or new capability
+title: "[enhancement] "
+labels: ["enhancement", "needs-design"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This project is a small reference implementation, not a platform. Proposals that keep it narrow and testable are most likely to be accepted. See ROADMAP.md.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem being solved
+    validations:
+      required: true
+  - type: input
+    id: user
+    attributes:
+      label: Intended user
+      placeholder: e.g. reader of the reference, operator, adapter author
+    validations:
+      required: true
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: components
+    attributes:
+      label: Affected modules
+      description: e.g. governance, broker, gateway, runtime, workers, adapters, store, report, CLI
+    validations:
+      required: true
+  - type: textarea
+    id: architecture
+    attributes:
+      label: Trust-boundary and limitations implications
+      description: Effect on authorization, credentials, evidence integrity, budgets, event admission, replay, live provider access, or the claims in docs/limitations.md.
+  - type: textarea
+    id: verification
+    attributes:
+      label: Suggested verification
+      description: Prefer scripted and fixture tests. Live provider tests are not required.
+    validations:
+      required: true

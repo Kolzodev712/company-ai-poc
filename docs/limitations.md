@@ -2,11 +2,13 @@
 
 ## Verification
 
+Requires Rust 1.94.1 or newer (the highest `rust-version` among the locked dependencies, set by the AWS SDK stack).
+
 ```bash
 cargo fmt --all -- --check
-cargo clippy --workspace --all-targets --all-features -- -D warnings
-cargo test --workspace --all-features
-cargo run -- demo --output var/demo
+cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+cargo test --workspace --all-features --locked
+cargo run --locked -- demo --output var/demo
 ```
 
 ## What a passing fixture run shows
@@ -29,7 +31,7 @@ The scripted worker and fixture adapter complete the example investigation witho
 
 ## Proposed cursor-hub follow-ups
 
-These were not applied to cursor-hub.
+These are design-only proposals. They were not applied to cursor-hub, and this project does not depend on them.
 
 1. Publish a tiny import-safe helper for canonical JSON and SHA-256 fingerprints that does not import the simulation reducer, so a companion can depend on it instead of reimplementing the idea.
 2. Mark skill files with a machine-readable audience, `cursor-design` or `runtime-excerpt`, so a runtime does not have to guess which prose is safe to put in a worker prompt.

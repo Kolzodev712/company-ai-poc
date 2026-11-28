@@ -9,6 +9,7 @@ database = "var/live/state.sqlite"
 reports_dir = "var/live/reports"
 
 [hub]
+# Sibling checkout of https://github.com/Kolzodev712/cursor-hub (portable relative path, not a machine-specific absolute path).
 path = "../cursor-hub"
 
 [worker]

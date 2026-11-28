@@ -1,0 +1,76 @@
+name: Bug report
+description: Report a confirmed or suspected defect
+title: "[bug] "
+labels: ["bug", "needs-reproduction"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Governance bundle / validation
+        - Broker / authorization
+        - Gateway / tool execution
+        - Runtime / budgets / event admission
+        - Store / inspect / replay / export
+        - Report
+        - Scripted worker / fixture adapter
+        - Ollama worker (live)
+        - S3 adapter (live)
+        - CLI
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Revision (git SHA or tag)
+      placeholder: e.g. v0.1.0 or abcdef0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS and `rustc --version`. Say whether the run was fixture or live, and scripted or Ollama. No credentials.
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command run
+      description: The exact `cargo run --locked -- ...` command.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+      description: Include the exit code (0 completed, 1 recorded failure, 2 setup/validation/conflict).
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs or `inspect` output
+      description: Redact secrets, bucket names, AWS profile details, and personal paths.
+  - type: textarea
+    id: config
+    attributes:
+      label: Relevant configuration (no credentials)
+  - type: markdown
+    attributes:
+      value: |
+        Security vulnerabilities: use https://github.com/Kolzodev712/company-ai-poc/security/advisories/new (see SECURITY.md), not this form.

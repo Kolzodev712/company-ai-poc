@@ -2,8 +2,15 @@
 name = "company-ai"
 version = "0.1.0"
 edition = "2021"
-description = "Local proof of concept for governed company AI workflow components."
+rust-version = "1.94.1"
+description = "Rust reference implementation of governed AI workflows with scoped authorization, tool gateways, execution budgets and evidence-linked audit reporting."
 readme = "README.md"
+license = "Apache-2.0"
+authors = ["Nikola Kolev"]
+repository = "https://github.com/Kolzodev712/company-ai-poc"
+homepage = "https://github.com/Kolzodev712/company-ai-poc"
+keywords = ["ai", "governance", "agents", "orchestration", "audit"]
+categories = ["command-line-utilities", "development-tools"]
 publish = false
 
 [dependencies]

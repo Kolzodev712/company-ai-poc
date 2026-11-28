@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/Kolzodev712/company-ai-poc/security/advisories/new
+    about: Do not disclose vulnerabilities in public issues.
+  - name: cursor-hub (methodological reference)
+    url: https://github.com/Kolzodev712/cursor-hub/issues
+    about: Issues about the cursor-hub packs, rules, or skills themselves.

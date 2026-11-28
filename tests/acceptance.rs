@@ -57,7 +57,7 @@ fn fixture_command_writes_an_evidence_backed_report() {
     assert_eq!(document["governance"]["policy_version"], "2026.11.25.1");
     assert_eq!(
         document["governance"]["cursor_hub_commit"],
-        "c5328edae2ac54df38244d7a4ef9353de1553a84"
+        "14b375bbc77c0dfb15d03cb26f1231c3b5d5d0da"
     );
     assert_eq!(document["completion"]["passed"], true);
     assert_eq!(document["authorization_decisions"][0]["allowed"], true);
@@ -749,7 +749,7 @@ fn provenance_matches_the_hub_and_skill_text_is_loaded() {
     let bundle = load_bundle(bundle_path()).unwrap();
     assert_eq!(
         bundle.document.provenance.commit,
-        "c5328edae2ac54df38244d7a4ef9353de1553a84"
+        "14b375bbc77c0dfb15d03cb26f1231c3b5d5d0da"
     );
     if !hub().is_dir() {
         return;

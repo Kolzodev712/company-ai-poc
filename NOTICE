@@ -1,0 +1,14 @@
+company-ai-poc
+Copyright © 2026 T.L.P. Arc Entertainment Ltd.
+
+This product includes software developed at T.L.P. Arc Entertainment Ltd.
+Author and maintainer: Nikola Kolev (https://github.com/Kolzodev712).
+Licensed under the Apache License, Version 2.0.
+
+This repository adapts concepts and narrow instructional excerpts from
+cursor-hub (https://github.com/Kolzodev712/cursor-hub), which is licensed
+under the MIT License. Copyright (c) 2025 cursor-hub contributors.
+See that project's LICENSE for the full MIT terms. Required MIT copyright
+and permission notices are retained for the adapted material. cursor-hub
+is a read-only methodological reference; this project does not redistribute
+the cursor-hub pack tree as a runtime dependency.

@@ -7,7 +7,7 @@ Status: accepted. The Python language choice is superseded by ADR 0002. Module b
 
 `company-ai-poc` is a consultancy reference kit: one local Python process with four logical modules (governance, security broker, tooling gateway, runtime). The example scenario is a diagnostic investigation, not a workflow every company should adopt.
 
-cursor-hub was inspected as a read-only reference. The local checkout is `/home/kolzo-dev/Desktop/cursor-hub` at commit `c5328edae2ac54df38244d7a4ef9353de1553a84` (clean `main`, matching the previously reviewed commit). The hub's system-orchestration kit is offline simulation. Its fixture approvals, receipts, and `VERIFIED` state are not live authentication or evidence.
+cursor-hub was inspected as a read-only reference. Use a sibling checkout (for example `../cursor-hub` next to this repository) at the provenance commit recorded in `governance/bundle.json` (originally `c5328edae2ac54df38244d7a4ef9353de1553a84` at the time of this ADR; refresh the pin when hub sources change). Pass that path with `--hub` when validating provenance. The hub's system-orchestration kit is offline simulation. Its fixture approvals, receipts, and `VERIFIED` state are not live authentication or evidence.
 
 ## Decision
 
