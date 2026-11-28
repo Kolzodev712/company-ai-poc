@@ -8,7 +8,17 @@ What exists now is in [CHANGELOG.md](CHANGELOG.md) under `0.1.0`: governance bun
 
 ## Accepted contribution opportunities
 
-Placeholder. No issues are published yet. When they are, small well-scoped items (documentation fixes, test coverage for denial and failure paths, clearer error messages) will be labeled here and in the issue tracker. Until then, open an issue to discuss before starting work.
+Published issues (start here):
+
+| Issue | Labels |
+|-------|--------|
+| [#1 — Fixture-demo onboarding polish](https://github.com/Kolzodev712/company-ai-poc/issues/1) | good first issue, documentation |
+| [#2 — `inspect` / report reading examples](https://github.com/Kolzodev712/company-ai-poc/issues/2) | help wanted, documentation |
+| [#3 — Untested broker deny reasons](https://github.com/Kolzodev712/company-ai-poc/issues/3) | help wanted, testing |
+
+Additional drafts (budget exhaustion, exact size-limit fixture, additional adapter design) are ready to publish via `finish-remaining.sh` if activation was interrupted before they were created.
+
+Open an issue to discuss before starting high-scrutiny work; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Maintainer-led
 
