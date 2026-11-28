@@ -15,8 +15,9 @@ Published issues (start here):
 | [#1 — Fixture-demo onboarding polish](https://github.com/Kolzodev712/company-ai-poc/issues/1) | good first issue, documentation |
 | [#2 — `inspect` / report reading examples](https://github.com/Kolzodev712/company-ai-poc/issues/2) | help wanted, documentation |
 | [#3 — Untested broker deny reasons](https://github.com/Kolzodev712/company-ai-poc/issues/3) | help wanted, testing |
-
-Additional drafts (budget exhaustion, exact size-limit fixture, additional adapter design) are ready to publish via `finish-remaining.sh` if activation was interrupted before they were created.
+| [#4 — Model-turn / provider-attempt budget exhaustion](https://github.com/Kolzodev712/company-ai-poc/issues/4) | help wanted, testing |
+| [#5 — Exact `max_result_bytes` boundary fixture](https://github.com/Kolzodev712/company-ai-poc/issues/5) | good first issue, testing |
+| [#6 — Additional read-only adapter (design)](https://github.com/Kolzodev712/company-ai-poc/issues/6) | needs-design, enhancement |
 
 Open an issue to discuss before starting high-scrutiny work; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
