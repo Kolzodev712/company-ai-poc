@@ -22,22 +22,39 @@ The default path uses a scripted worker and local fixture files. It needs no mod
 
 Requirements: Rust toolchain **1.94.1 or newer** (the locked AWS SDK dependencies set this minimum).
 
+The local fixture demo needs no AWS account, Ollama server, or cursor-hub checkout. After the build, it runs the scripted worker against fixture data without network calls.
+
 ```bash
 git clone https://github.com/Kolzodev712/company-ai-poc.git
 cd company-ai-poc
 cargo build --locked
-cargo run --locked -- demo --output var/demo
+DEMO_OUTPUT="$(cargo run --locked -- demo --output var/demo)"
+printf '%s\n' "$DEMO_OUTPUT"
+RUN_ID="$(printf '%s\n' "$DEMO_OUTPUT" | awk '$1 == "run_id:" { print $2; exit }')"
 ```
 
-`demo` prints a `run_id:` line. Use that value as `RUN_ID`:
+The first successful run prints the following lines, among others. `<id>` stands for the generated suffix.
+
+```text
+run_id: run_<id>
+status: succeeded
+reused: false
+report_json: var/demo/reports/run_<id>.json
+```
+
+Use the captured ID to inspect, replay, and export the run:
 
 ```bash
-cargo run --locked -- inspect --database var/demo/state.sqlite --run RUN_ID
-cargo run --locked -- replay  --database var/demo/state.sqlite --run RUN_ID
-cargo run --locked -- export  --database var/demo/state.sqlite --run RUN_ID
+cargo run --locked -- inspect --database var/demo/state.sqlite --run "$RUN_ID"
+cargo run --locked -- replay  --database var/demo/state.sqlite --run "$RUN_ID"
+cargo run --locked -- export  --database var/demo/state.sqlite --run "$RUN_ID"
 ```
 
-`demo` always uses the scripted worker and the fixture service. It does not read `live.toml` and does not use the network. Running it again with the same event returns the original run and does not read the fixture again. Reports are written to `var/demo/reports/<run_id>.json` and `.md`. A recorded sample is in [examples/demo-run/](examples/demo-run/). Paths inside a config file are relative to the working directory.
+- `inspect` prints the recorded history as JSON, including fields such as `"identity": "investigator"`, `"status": "succeeded"`, and `"view": "inspect"`.
+- `replay` prints a read-only view with `"view": "replay"` and `"external_calls": 0`.
+- `export` prints `status: succeeded` and the `report_json:` and `report_md:` paths under `var/demo/reports/`.
+
+If the build fails on the Rust version, check `rustc --version` and select 1.94.1 or newer. The first build needs time to fetch and compile dependencies. If a repeated demo reports `reused: true`, it found the original run for the same event. Use a fresh output directory for a fresh state database. `var/` is ignored by Git, and paths in config files are relative to the working directory. A recorded report is available in [examples/demo-run/](examples/demo-run/).
 
 **`cursor-hub` is optional.** `demo` and `run` do not read it. Only `validate --hub` needs a sibling checkout of [Kolzodev712/cursor-hub](https://github.com/Kolzodev712/cursor-hub) at the commit recorded in `governance/bundle.json`:
 
